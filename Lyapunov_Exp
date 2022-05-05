@@ -1,0 +1,35 @@
+def lyapunov_exp(x0=0.0001,y0 = 0.0001,dt=1,d0= 0.001,tmax=30,h=0.01):
+    solve = 
+    
+    t = 0.001
+    lambdas=[]
+    xbegin,ybegin = x0,y0  
+        
+        
+    
+    while True:
+       
+        
+  
+        angleprop = 2*np.pi* np.random.rand() 
+    #np.random.rand gives random number in (0,1]  and 2pi gives it within (0,2pi] this allows us to 
+    # construct the next trajectory some small angular distance away constrained by d0
+    
+    
+        xend = xbegin +d0*np.cos(angleprop)
+        yend = ybegin +d0*np.sin(angleprop)   
+
+        
+        tup,LocX = solve(xbegin, ybegin,h,t+dt,t)
+        tup, LocY = solve(xend,yend,h,t+dt,t)
+        t = tup
+    
+        xend, yend = LocY[-1,0],LocY[-1,1]
+        xstart, ystart = LocX[-1,0],LocX[-1,1]
+        separation = math.dist((xend,yend),(xstart,ystart))
+    
+ 
+   
+        lambdas.append(1/dt *np.log(separation/d0) ) 
+        if t>tmax: break
+    return lambdas
